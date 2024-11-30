@@ -101,11 +101,7 @@ const Live = () => {
           });
           break;
         case 'e': // emoji reaction
-          setCursorState((prevState: CursorState) => 
-            prevState.mode !== CursorMode.Chat
-              ? { mode: CursorMode.ReactionSelector }
-              : prevState
-          );
+          setCursorState({ mode: CursorMode.ReactionSelector });
           break;
         default:
           break;
