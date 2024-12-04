@@ -18,7 +18,7 @@ const App = () => {
   const selectedShapeRef = useRef<string | null>(null);
   const activeObjectRef = useRef<fabric.Object | null>(null);
   
-  const canvasObjects = useStorage((root) => root.canvasObjects);
+  const canvasObjects = useStorage((root) => root.canvasObjects) || {};
 
   const syncShapeInStorage = useMutation(({ storage }, object) => {
     if (!object) return;
@@ -145,7 +145,7 @@ const App = () => {
         handleActiveElement={handleActiveElement}
       />
       <section className="flex h-full flex-row">
-        <LeftSidebar />
+        <LeftSidebar allShapes={Array.from(canvasObjects)} />
         <Live canvasRef={canvasRef} />
         <RightSidebar />
       </section>
