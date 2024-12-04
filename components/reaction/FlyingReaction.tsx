@@ -5,7 +5,7 @@ type Props = {
   y: number;
   timestamp: number;
   value: string;
-};
+}
 
 export default function FlyingReaction({ x, y, timestamp, value }: Props) {
   return (

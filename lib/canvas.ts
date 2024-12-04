@@ -1,4 +1,4 @@
-import { fabric } from "fabric";
+import * as fabric from "fabric";
 import { v4 as uuid4 } from "uuid";
 
 import {

@@ -12,7 +12,7 @@ import Image from "next/image";
  * See pages/api/liveblocks-auth.ts and https://liveblocks.io/docs/api-reference/liveblocks-node#authorize for more information
  */
 
-const IMAGE_SIZE = 48;
+const IMAGE_SIZE = 36;
 
 export function Avatar({ name, otherStyles }: { name: string; otherStyles: string }) {
   return (
@@ -21,9 +21,9 @@ export function Avatar({ name, otherStyles }: { name: string; otherStyles: strin
         alt={name}
         src={`https://liveblocks.io/avatars/avatar-${Math.floor(Math.random() * 30)}.png`}
         className={styles.avatar_picture}
-        fill
-        // height={IMAGE_SIZE}
-        // width={IMAGE_SIZE}
+        height={IMAGE_SIZE}
+        width={IMAGE_SIZE}
+        // fill
       />
     </div>
   );

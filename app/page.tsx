@@ -1,15 +1,17 @@
 "use client"
 
-import Live from "@/components/Live";
-import Navbar from "@/components/Navbar";
+import dynamic from "next/dynamic";
+
+/**
+ * Disable ssr to avoid pre-rendering issues of Next.js
+ * We're doing this because we're using a canvas element that can't be pre-rendered by Next.js on the server
+ */
+const NoSSR = dynamic(() => import("./App"), { ssr: false });
 
 export default function Page() {
   return (
-    <main className="h-screen overflow-hidden">
-      <Navbar />
-      <section className="flex h-full flex-row">
-        <Live />
-      </section>
-    </main>
+    <div>
+      <NoSSR />
+    </div>
   );
 }
