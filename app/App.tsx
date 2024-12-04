@@ -2,6 +2,8 @@ import * as fabric from "fabric";
 import { useEffect, useRef, useState } from "react";
 import { useMutation, useStorage } from "@liveblocks/react";
 import { handleCanvasMouseDown, handleCanvasMouseMove, handleCanvasMouseUp, handleCanvasObjectModified, handleResize, initializeFabric, renderCanvas } from "@/lib/canvas";
+import { handleDelete } from "@/lib/key-events";
+import { defaultNavElement } from "@/constants";
 import { ActiveElement } from "@/types/type";
 import Navbar from "@/components/Navbar";
 import LeftSidebar from "@/components/LeftSidebar";
@@ -25,7 +27,7 @@ const App = () => {
     const shapeData = object.toJSON();
     shapeData.objectId = objectId;
 
-    const canvasObjects: any = storage.get('canvasObjects');
+    const canvasObjects = storage.get('canvasObjects');
     canvasObjects.set(objectId, shapeData);
   }, []);
 
@@ -35,7 +37,36 @@ const App = () => {
     icon: '',
   });
 
+  const deleteAllShapes = useMutation(({ storage }) => {
+    const canvasObjects = storage.get('canvasObjects');
+    if (!canvasObjects || canvasObjects.size === 0) {
+      return true;
+    }
+    for (const [key, value] of canvasObjects.entries()) {
+      canvasObjects.delete(key);
+    }
+    return canvasObjects.size === 0;
+  }, []);
+
+  const deleteShapeFromStorage = useMutation(({storage}, objectId) => {
+    const canvasObjects = storage.get('canvasObjects');
+    canvasObjects.delete(objectId);
+  }, []);
+
   const handleActiveElement = (elem: ActiveElement) => {
+    switch (elem?.value) {
+      case 'reset':
+        deleteAllShapes();
+        fabricRef.current?.clear();
+        setActiveElement(defaultNavElement);
+        break;
+      case 'delete':
+        handleDelete(fabricRef.current, deleteShapeFromStorage);
+        setActiveElement(defaultNavElement);
+        break;
+      default:
+        break;
+    }
     setActiveElement(elem);
     selectedShapeRef.current = elem?.value as string;
   };
@@ -89,7 +120,7 @@ const App = () => {
        * dispose is a method provided by Fabric that allows you to dispose the canvas.
        * It clears the canvas and removes all the event listeners.
        *
-       * dispose: http://fabricjs.com/docs/fabric.Canvas.html#dispose
+       * dispose: https://fabricjs.com/api/classes/staticcanvasdommanager/#dispose
        */
       canvas.dispose();
 
