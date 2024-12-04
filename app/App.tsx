@@ -1,8 +1,8 @@
 import * as fabric from "fabric";
 import { useEffect, useRef, useState } from "react";
-import { useMutation, useStorage } from "@liveblocks/react";
+import { useStorage, useMutation, useUndo, useRedo } from "@liveblocks/react";
 import { handleCanvasMouseDown, handleCanvasMouseMove, handleCanvasMouseUp, handleCanvasObjectModified, handleResize, initializeFabric, renderCanvas } from "@/lib/canvas";
-import { handleDelete } from "@/lib/key-events";
+import { handleDelete, handleKeyDown } from "@/lib/key-events";
 import { defaultNavElement } from "@/constants";
 import { ActiveElement } from "@/types/type";
 import Navbar from "@/components/Navbar";
@@ -11,12 +11,15 @@ import RightSidebar from "@/components/RightSidebar";
 import Live from "@/components/Live";
 
 const App = () => {
-  const isDrawing = useRef(false);
+  const undo = useUndo();
+  const redo = useRedo();
+  
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const fabricRef = useRef<fabric.Canvas | null>(null);
   const shapeRef = useRef<fabric.Object | null>(null);
   const selectedShapeRef = useRef<string | null>(null);
   const activeObjectRef = useRef<fabric.Object | null>(null);
+  const isDrawing = useRef(false);
   
   const canvasObjects = useStorage((root) => root.canvasObjects) || {};
 
@@ -114,6 +117,16 @@ const App = () => {
     window.addEventListener("resize", () => {
       handleResize({ canvas: fabricRef.current });
     });
+    window.addEventListener("keydown", (e) => {
+      handleKeyDown({
+        e,
+        canvas: fabricRef.current,
+        undo,
+        redo,
+        syncShapeInStorage,
+        deleteShapeFromStorage,
+      });
+    });
 
     return () => {
       /**
@@ -126,6 +139,16 @@ const App = () => {
 
       window.addEventListener("resize", () => {
         handleResize({ canvas: null });
+      });
+      window.removeEventListener("keydown", (e) => {
+        handleKeyDown({
+          e,
+          canvas: fabricRef.current,
+          undo,
+          redo,
+          syncShapeInStorage,
+          deleteShapeFromStorage,
+        });
       });
     };
   }, []);
