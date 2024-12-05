@@ -46,7 +46,7 @@ export function generateRandomName(): string {
 }
 
 export const getShapeInfo = (shapeType: string) => {
-  switch (shapeType) {
+  switch (shapeType.toLowerCase()) {
     case "rect":
       return {
         icon: "/assets/rectangle.svg",
@@ -71,7 +71,7 @@ export const getShapeInfo = (shapeType: string) => {
         name: "Line",
       };
 
-    case "i-text":
+    case "itext":
       return {
         icon: "/assets/text.svg",
         name: "Text",

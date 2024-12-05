@@ -23,7 +23,7 @@ const App = () => {
   const imageInputRef = useRef<HTMLInputElement>(null);
   const isDrawing = useRef(false);
   
-  const canvasObjects = useStorage((root: any) => root.canvasObjects) || {};
+  const canvasObjects: Map<string, object> = useStorage((root: any) => root.canvasObjects) || new Map();
 
   const syncShapeInStorage = useMutation(({ storage }, object) => {
     if (!object) return;
@@ -32,7 +32,7 @@ const App = () => {
     const shapeData = object.toJSON();
     shapeData.objectId = objectId;
 
-    const canvasObjects: any = storage.get('canvasObjects');
+    const canvasObjects: Map<string, object> = storage.get('canvasObjects');
     canvasObjects.set(objectId, shapeData);
   }, []);
 
@@ -43,7 +43,7 @@ const App = () => {
   });
 
   const deleteAllShapes = useMutation(({ storage }) => {
-    const canvasObjects: any = storage.get('canvasObjects');
+    const canvasObjects: Map<string, object> = storage.get('canvasObjects');
     if (!canvasObjects || canvasObjects.size === 0) {
       return true;
     }
@@ -54,7 +54,7 @@ const App = () => {
   }, []);
 
   const deleteShapeFromStorage = useMutation(({storage}, objectId) => {
-    const canvasObjects: any = storage.get('canvasObjects');
+    const canvasObjects: Map<string, object> = storage.get('canvasObjects');
     canvasObjects.delete(objectId);
   }, []);
 

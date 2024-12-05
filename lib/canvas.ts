@@ -63,6 +63,7 @@ export const handleCanvasMouseDown = ({
   if (selectedShapeRef.current === "freeform") {
     isDrawing.current = true;
     canvas.isDrawingMode = true;
+    canvas.freeDrawingBrush = new fabric.PencilBrush(canvas);
     canvas.freeDrawingBrush.width = 5;
     return;
   }
