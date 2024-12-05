@@ -21,7 +21,7 @@ const App = () => {
   const activeObjectRef = useRef<fabric.Object | null>(null);
   const isDrawing = useRef(false);
   
-  const canvasObjects = useStorage((root) => root.canvasObjects) || {};
+  const canvasObjects = useStorage((root: any) => root.canvasObjects) || {};
 
   const syncShapeInStorage = useMutation(({ storage }, object) => {
     if (!object) return;

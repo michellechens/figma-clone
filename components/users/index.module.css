@@ -1,14 +1,15 @@
 .more {
-  border-width: 4px;
-  border-radius: 9999px;
-  border-color: white;
-  background-color: #9ca3af;
-  min-width: 56px;
-  width: 56px;
-  height: 56px;
-  margin-left: -0.75rem;
+  min-width: 40px;
+  width: 40px;
+  height: 40px;
+  margin-left: -0.5rem;
   display: flex;
   justify-content: center;
   align-items: center;
+  border-width: 2px;
+  border-radius: 9999px;
+  border-color: white;
+  font-weight: bold;
+  background-color: #9ca3af;
   color: white;
 }

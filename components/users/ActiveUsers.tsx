@@ -1,13 +1,14 @@
+import { useMemo } from "react";
 import { useOthers, useSelf } from "@liveblocks/react";
 import { generateRandomName } from "@/lib/utils";
 import { Avatar } from "./Avatar";
 import styles from "./index.module.css";
-import { useMemo } from "react";
 
 const ActiveUsers = () => {
-  const users = useOthers();
+  const MAX_OTHERS = 2;
   const currentUser = useSelf();
-  const hasMoreUsers = users.length > 3;
+  const otherUsers = useOthers();
+  const hasMoreUsers = otherUsers.length > MAX_OTHERS;
 
   const memorizedUsers = useMemo(() => {
     return (
@@ -20,7 +21,7 @@ const ActiveUsers = () => {
             />
           )}
           
-          {users.slice(0, 3).map(({ connectionId }) => (
+          {otherUsers.slice(0, MAX_OTHERS).map(({ connectionId }) => (
             <Avatar
               key={connectionId}
               name={generateRandomName()}
@@ -28,11 +29,11 @@ const ActiveUsers = () => {
             />
           ))}
   
-          {hasMoreUsers && <div className={styles.more}>+{users.length - 3}</div>}
+          {hasMoreUsers && <div className={styles.more}>+{otherUsers.length - MAX_OTHERS}</div>}
         </div>
       </div>
     )
-  }, [users.length]);
+  }, [currentUser?.connectionId, otherUsers.length]);
 
   return memorizedUsers;
 }

@@ -1,13 +1,13 @@
 .avatar {
+  width: 40px;
+  height: 40px;
+  margin-left: -0.5rem;
   display: flex;
   place-content: center;
   position: relative;
-  border: 3px solid #fff;
+  border: 2px solid #fff;
   border-radius: 9999px;
-  width: 36px;
-  height: 36px;
   background-color: #9ca3af;
-  margin-left: -0.75rem;
 }
 
 .avatar:before {

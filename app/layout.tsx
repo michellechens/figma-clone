@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import localFont from "next/font/local";
 import { Room } from "./Room";
+import localFont from "next/font/local";
 import "./globals.css";
 
 const geistSans = localFont({
@@ -19,11 +19,7 @@ export const metadata: Metadata = {
   description: "A minimalist Figma clone using Next.js, Fabric.js and Liveblocks for real-time collaboration.",
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode; }>) {
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased bg-primary-grey-200`}>
