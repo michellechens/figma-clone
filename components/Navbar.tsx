@@ -10,7 +10,6 @@ import ShapesMenu from "./ShapesMenu";
 import ActiveUsers from "./users/ActiveUsers";
 
 const Navbar = ({ activeElement, imageInputRef, handleImageUpload, handleActiveElement }: NavbarProps) => {
-
   const isActive = (value: string | Array<ActiveElement>) =>
     (activeElement && activeElement.value === value) ||
     (Array.isArray(value) && value.some((val) => val?.value === activeElement?.value));

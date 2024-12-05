@@ -96,23 +96,29 @@ export const handleImageUpload = ({
   shapeRef,
   syncShapeInStorage,
 }: ImageUpload) => {
+  const MAX_SIZE = 1024 * 1024;
+
+  if (file.size > MAX_SIZE) {
+    window.alert('Your image file size must under 1MB!')
+    return;
+  }
+
   const reader = new FileReader();
 
-  reader.onload = () => {
-    fabric.Image.fromURL(reader.result as string, (img) => {
-      img.scaleToWidth(200);
-      img.scaleToHeight(200);
+  reader.onload = async () => {
+    const img = await fabric.FabricImage.fromURL(reader.result as string);
 
-      canvas.current.add(img);
+    img.scaleToWidth(200);
+    img.scaleToHeight(200);
 
-      // @ts-ignore
-      img.objectId = uuidv4();
+    // @ts-ignore
+    img.objectId = uuidv4();
 
-      shapeRef.current = img;
+    shapeRef.current = img;
+    syncShapeInStorage(img);
 
-      syncShapeInStorage(img);
-      canvas.current.requestRenderAll();
-    });
+    canvas.current.add(img);
+    canvas.current.requestRenderAll();
   };
 
   reader.readAsDataURL(file);

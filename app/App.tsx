@@ -2,6 +2,7 @@ import * as fabric from "fabric";
 import { useEffect, useRef, useState } from "react";
 import { useStorage, useMutation, useUndo, useRedo } from "@liveblocks/react";
 import { handleCanvasMouseDown, handleCanvasMouseMove, handleCanvasMouseUp, handleCanvasObjectModified, handleResize, initializeFabric, renderCanvas } from "@/lib/canvas";
+import { handleImageUpload } from "@/lib/shapes";
 import { handleDelete, handleKeyDown } from "@/lib/key-events";
 import { defaultNavElement } from "@/constants";
 import { ActiveElement } from "@/types/type";
@@ -19,6 +20,7 @@ const App = () => {
   const shapeRef = useRef<fabric.Object | null>(null);
   const selectedShapeRef = useRef<string | null>(null);
   const activeObjectRef = useRef<fabric.Object | null>(null);
+  const imageInputRef = useRef<HTMLInputElement>(null);
   const isDrawing = useRef(false);
   
   const canvasObjects = useStorage((root: any) => root.canvasObjects) || {};
@@ -30,7 +32,7 @@ const App = () => {
     const shapeData = object.toJSON();
     shapeData.objectId = objectId;
 
-    const canvasObjects = storage.get('canvasObjects');
+    const canvasObjects: any = storage.get('canvasObjects');
     canvasObjects.set(objectId, shapeData);
   }, []);
 
@@ -41,7 +43,7 @@ const App = () => {
   });
 
   const deleteAllShapes = useMutation(({ storage }) => {
-    const canvasObjects = storage.get('canvasObjects');
+    const canvasObjects: any = storage.get('canvasObjects');
     if (!canvasObjects || canvasObjects.size === 0) {
       return true;
     }
@@ -52,7 +54,7 @@ const App = () => {
   }, []);
 
   const deleteShapeFromStorage = useMutation(({storage}, objectId) => {
-    const canvasObjects = storage.get('canvasObjects');
+    const canvasObjects: any = storage.get('canvasObjects');
     canvasObjects.delete(objectId);
   }, []);
 
@@ -64,14 +66,31 @@ const App = () => {
         setActiveElement(defaultNavElement);
         break;
       case 'delete':
-        handleDelete(fabricRef.current, deleteShapeFromStorage);
+        handleDelete(fabricRef.current as any, deleteShapeFromStorage);
         setActiveElement(defaultNavElement);
+        break;
+      case 'image':
+        imageInputRef.current?.click();
+        isDrawing.current = false;
+        if (fabricRef.current) {
+          fabricRef.current.isDrawingMode = true;
+        }
         break;
       default:
         break;
     }
     setActiveElement(elem);
     selectedShapeRef.current = elem?.value as string;
+  };
+
+  const handleImageUploadEvent = (e: any) => {
+    e.stopPropagation();
+    handleImageUpload({
+      file: e.target.files[0],
+      canvas: fabricRef as any,
+      shapeRef,
+      syncShapeInStorage,
+    });
   };
 
   useEffect(() => {
@@ -165,7 +184,9 @@ const App = () => {
     <main className="h-screen overflow-hidden">
       <Navbar
         activeElement={activeElement}
+        imageInputRef={imageInputRef}
         handleActiveElement={handleActiveElement}
+        handleImageUpload={handleImageUploadEvent}
       />
       <section className="flex h-full flex-row">
         <LeftSidebar allShapes={Array.from(canvasObjects)} />

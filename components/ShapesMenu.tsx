@@ -5,13 +5,7 @@ import { ShapesMenuProps } from "@/types/type";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "./ui/dropdown-menu";
 import { Button } from "./ui/button";
 
-const ShapesMenu = ({
-  item,
-  activeElement,
-  handleActiveElement,
-  handleImageUpload,
-  imageInputRef,
-}: ShapesMenuProps) => {
+const ShapesMenu = ({ item, activeElement, handleActiveElement, handleImageUpload, imageInputRef }: ShapesMenuProps) => {
   const isDropdownElem = item.value.some((elem) => elem?.value === activeElement.value);
 
   return (
@@ -57,8 +51,8 @@ const ShapesMenu = ({
       <input
         type="file"
         className="hidden"
-        ref={imageInputRef}
         accept="image/*"
+        ref={imageInputRef}
         onChange={handleImageUpload}
       />
     </>
