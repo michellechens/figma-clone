@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from "react";
-import { useBroadcastEvent, useEventListener, useMyPresence, useOthers } from "@liveblocks/react";
+import { useBroadcastEvent, useEventListener, useMyPresence } from "@liveblocks/react";
 import { CursorMode, CursorState, Reaction, ReactionEvent } from "@/types/type";
 import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } from "@/components/ui/context-menu";
 import { shortcuts } from "@/constants";
@@ -17,7 +17,6 @@ type Props = {
 };
 
 const Live = ({ canvasRef, undo, redo }: Props) => {
-  const others = useOthers();
   const [{ cursor }, updateMyPresence] = useMyPresence();
 
   const [cursorState, setCursorState] = useState<CursorState>({ mode: CursorMode.Hidden });
@@ -191,7 +190,7 @@ const Live = ({ canvasRef, undo, redo }: Props) => {
         }
 
         {/* Show the live cursors of other users */}
-        <LiveCursors others={others} />
+        <LiveCursors />
 
         {/* If cursor is in chat mode, show the chat cursor */}
         {
