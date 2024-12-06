@@ -2,7 +2,7 @@ import * as fabric from "fabric";
 import { useEffect, useRef, useState } from "react";
 import { useStorage, useMutation, useUndo, useRedo } from "@liveblocks/react";
 import { LiveMap } from "@liveblocks/client";
-import { handleCanvasMouseDown, handleCanvasMouseMove, handleCanvasMouseUp, handleCanvasObjectModified, handleCanvasObjectScaling, handleCanvasSelectionCreated, handleResize, initializeFabric, renderCanvas } from "@/lib/canvas";
+import { handleCanvasMouseDown, handleCanvasMouseMove, handleCanvasMouseUp, handleCanvasObjectModified, handleCanvasObjectScaling, handleCanvasSelectionCreated, handlePathCreated, handleResize, initializeFabric, renderCanvas } from "@/lib/canvas";
 import { handleImageUpload } from "@/lib/shapes";
 import { handleDelete, handleKeyDown } from "@/lib/key-events";
 import { defaultNavElement } from "@/constants";
@@ -151,6 +151,12 @@ const App = () => {
         options,
         isEditingRef,
         setElementAttributes,
+      });
+    });
+    canvas.on("path:created", (options) => {
+      handlePathCreated({
+        options,
+        syncShapeInStorage,
       });
     });
     canvas.on("object:scaling", (options) => {

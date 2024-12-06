@@ -83,7 +83,7 @@ export const getShapeInfo = (shapeType: string) => {
         name: "Image",
       };
 
-    case "freeform":
+    case "path":
       return {
         icon: "/assets/freeform.svg",
         name: "Free Drawing",
