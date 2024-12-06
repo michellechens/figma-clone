@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { useOthers, useSelf } from "@liveblocks/react";
 import { generateRandomName } from "@/lib/utils";
-import { Avatar } from "./Avatar";
+import Avatar from "./Avatar";
 import styles from "./index.module.css";
 
 const ActiveUsers = () => {
@@ -36,6 +36,6 @@ const ActiveUsers = () => {
   }, [currentUser?.connectionId, otherUsers.length]);
 
   return memorizedUsers;
-}
+};
 
 export default ActiveUsers;

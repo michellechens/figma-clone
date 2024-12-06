@@ -93,10 +93,10 @@ const App = () => {
     selectedShapeRef.current = elem?.value as string;
   };
 
-  const handleImageUploadEvent = (e: any) => {
+  const handleImageUploadEvent = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.stopPropagation();
     handleImageUpload({
-      file: e.target.files[0],
+      file: e.target.files?.[0] || null,
       canvas: fabricRef as any,
       shapeRef,
       syncShapeInStorage,
@@ -104,7 +104,7 @@ const App = () => {
   };
 
   useEffect(() => {
-    const canvas = initializeFabric({ canvasRef, fabricRef });
+    const canvas: any = initializeFabric({ canvasRef, fabricRef });
 
     canvas.on("mouse:down", (options: any) => {
       handleCanvasMouseDown({
@@ -225,6 +225,6 @@ const App = () => {
       </section>
     </main>
   );
-}
+};
 
 export default App;

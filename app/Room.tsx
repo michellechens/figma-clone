@@ -4,7 +4,7 @@ import { ReactNode } from "react";
 import { LiveblocksProvider, RoomProvider, ClientSideSuspense } from "@liveblocks/react/suspense";
 import { LiveMap } from "@liveblocks/client";
 
-export function Room({ children }: { children: ReactNode }) {
+const Room = ({ children }: { children: ReactNode }) => {
 	const PUBLIC_API_KEY = process.env.NEXT_PUBLIC_LIVEBLOCKS_PUBLIC_KEY;
   return (
     <LiveblocksProvider publicApiKey={PUBLIC_API_KEY!}>
@@ -25,4 +25,6 @@ export function Room({ children }: { children: ReactNode }) {
       </RoomProvider>
     </LiveblocksProvider>
   );
-}
+};
+
+export default Room;

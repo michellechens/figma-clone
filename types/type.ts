@@ -84,10 +84,14 @@ export type ElementDirection = {
 };
 
 export type ImageUpload = {
-  file: File;
+  file: File | null;
   canvas: React.MutableRefObject<fabric.Canvas>;
   shapeRef: React.MutableRefObject<fabric.Object | null>;
   syncShapeInStorage: (shape: fabric.Object) => void;
+};
+
+export type LeftSidebarProps = {
+  allShapes: Array<any>;
 };
 
 export type RightSidebarProps = {

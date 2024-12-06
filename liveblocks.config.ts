@@ -1,3 +1,5 @@
+import { LiveMap } from "@liveblocks/client";
+
 // Define Liveblocks types for your application
 // https://liveblocks.io/docs/api-reference/liveblocks-react#Typing-your-data
 declare global {
@@ -12,6 +14,7 @@ declare global {
     Storage: {
       // Example, a conflict-free list
       // animals: LiveList<string>;
+      canvasObjects: LiveMap<string, any>;
     };
 
     // Custom user info set when authenticating with a secret key
@@ -35,6 +38,11 @@ declare global {
       // Example, attaching coordinates to a thread
       // x: number;
       // y: number;
+      resolved: boolean;
+      zIndex: number;
+      time?: number;
+      x: number;
+      y: number;
     };
 
     // Custom room info set with resolveRoomsInfo, for useRoomInfo

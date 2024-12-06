@@ -5,9 +5,9 @@ import { memo } from "react";
 import { navElements } from "@/constants";
 import { ActiveElement, NavbarProps } from "@/types/type";
 import { Button } from "./ui/button";
-// import { NewThread } from "./comments/NewThread";
 import ShapesMenu from "./ShapesMenu";
 import ActiveUsers from "./users/ActiveUsers";
+import NewThread from "./comments/NewThread";
 
 const Navbar = ({ activeElement, imageInputRef, handleImageUpload, handleActiveElement }: NavbarProps) => {
   const isActive = (value: string | Array<ActiveElement>) =>
@@ -42,17 +42,16 @@ const Navbar = ({ activeElement, imageInputRef, handleImageUpload, handleActiveE
                 />
               ) : item?.value === "comments" ? (
                 // If value is comments, trigger the NewThread component
-                // <NewThread>
-                //   <Button className="relative w-5 h-5 object-contain">
-                //     <Image
-                //       className={isActive(item.value) ? "invert" : ""}
-                //       src={item.icon}
-                //       alt={item.name}
-                //       fill
-                //     />
-                //   </Button>
-                // </NewThread>
-                <></>
+                <NewThread>
+                  <Button className="relative w-5 h-5 object-contain">
+                    <Image
+                      className={isActive(item.value) ? "invert" : ""}
+                      src={item.icon}
+                      alt={item.name}
+                      fill
+                    />
+                  </Button>
+                </NewThread>
               ) : (
                 <Button className="relative w-5 h-5 object-contain">
                   <Image

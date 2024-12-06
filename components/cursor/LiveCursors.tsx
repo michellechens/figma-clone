@@ -16,6 +16,6 @@ const LiveCursors = ({ others }: LiveCursorProps) => {
       />
     );
   })
-}
+};
 
 export default LiveCursors;

@@ -5,7 +5,7 @@ type Props = {
   x: number;
   y: number;
   message: string;
-}
+};
 
 const Cursor = ({ color, x, y, message }: Props) => {
   return (
@@ -26,6 +26,6 @@ const Cursor = ({ color, x, y, message }: Props) => {
       }
     </div>
   );
-}
+};
 
 export default Cursor;

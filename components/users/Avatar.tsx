@@ -14,7 +14,7 @@ import Image from "next/image";
 
 const IMAGE_SIZE = 36;
 
-export function Avatar({ name, otherStyles }: { name: string; otherStyles: string }) {
+const Avatar = ({ name, otherStyles }: { name: string; otherStyles: string }) => {
   return (
     <div className={`${styles.avatar} ${otherStyles} h-9 w-9`} data-tooltip={name}>
       <Image
@@ -27,4 +27,6 @@ export function Avatar({ name, otherStyles }: { name: string; otherStyles: strin
       />
     </div>
   );
-}
+};
+
+export default Avatar;

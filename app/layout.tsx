@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import { Room } from "./Room";
 import localFont from "next/font/local";
+import Room from "./Room";
 import "./globals.css";
 
 const geistSans = localFont({

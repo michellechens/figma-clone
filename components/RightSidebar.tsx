@@ -1,10 +1,10 @@
 import React, { useRef } from "react";
 import { RightSidebarProps } from "@/types/type";
+import { modifyShape } from "@/lib/shapes";
 import Dimensions from "./settings/Dimensions";
 import Text from "./settings/Text";
 import Color from "./settings/Color";
 import Export from "./settings/Export";
-import { modifyShape } from "@/lib/shapes";
 
 const RightSidebar = ({ elementAttributes, setElementAttributes, fabricRef, activeObjectRef, syncShapeInStorage, isEditingRef }: RightSidebarProps) => {
   const colorInputRef = useRef(null);
@@ -67,6 +67,6 @@ const RightSidebar = ({ elementAttributes, setElementAttributes, fabricRef, acti
       <Export />
     </section>
   );
-}
+};
 
 export default RightSidebar;

@@ -66,6 +66,6 @@ const CursorChat = ({ cursor, cursorState, setCursorState, updateMyPresence }: C
       }
     </div>
   );
-}
+};
 
 export default CursorChat;

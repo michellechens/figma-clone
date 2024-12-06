@@ -2,9 +2,10 @@
 
 import Image from "next/image";
 import { useMemo } from "react";
+import { LeftSidebarProps } from "@/types/type";
 import { getShapeInfo } from "@/lib/utils";
 
-const LeftSidebar = ({ allShapes }: { allShapes: Array<any> }) => {
+const LeftSidebar = ({ allShapes }: LeftSidebarProps) => {
   // memoize the result of this function so that it doesn't change on every render but only when there are new shapes
   const memoizedShapes = useMemo(() => {
     // console.log('allShapes:', allShapes);
@@ -13,7 +14,7 @@ const LeftSidebar = ({ allShapes }: { allShapes: Array<any> }) => {
         min-w-[227px] sticky left-0 h-full max-sm:hidden select-none overflow-y-auto pb-20">
         <h3 className="px-5 py-4 text-xs uppercase border-b border-primary-grey-200">Layers</h3>
         <div className="flex flex-col">
-          {allShapes?.map((shape: any) => {
+          {allShapes?.map((shape) => {
             const [objectId, shapeData] = shape;
             const info = getShapeInfo(shapeData?.type);
             return (
