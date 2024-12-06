@@ -1,6 +1,7 @@
 import * as fabric from "fabric";
 import { useEffect, useRef, useState } from "react";
 import { useStorage, useMutation, useUndo, useRedo } from "@liveblocks/react";
+import { LiveMap } from "@liveblocks/client";
 import { handleCanvasMouseDown, handleCanvasMouseMove, handleCanvasMouseUp, handleCanvasObjectModified, handleCanvasObjectScaling, handleCanvasSelectionCreated, handleResize, initializeFabric, renderCanvas } from "@/lib/canvas";
 import { handleImageUpload } from "@/lib/shapes";
 import { handleDelete, handleKeyDown } from "@/lib/key-events";
@@ -24,7 +25,7 @@ const App = () => {
   const isDrawing = useRef(false);
   const isEditingRef = useRef(false);
   
-  const canvasObjects: Map<string, object> = useStorage((root: any) => root.canvasObjects) || new Map();
+  const canvasObjects = useStorage((root) => root.canvasObjects) || new LiveMap();
 
   const syncShapeInStorage = useMutation(({ storage }, object) => {
     if (!object) return;
@@ -33,7 +34,7 @@ const App = () => {
     const shapeData = object.toJSON();
     shapeData.objectId = objectId;
 
-    const canvasObjects: Map<string, object> = storage.get('canvasObjects');
+    const canvasObjects = storage.get('canvasObjects');
     canvasObjects.set(objectId, shapeData);
   }, []);
 
@@ -53,7 +54,7 @@ const App = () => {
   });
 
   const deleteAllShapes = useMutation(({ storage }) => {
-    const canvasObjects: Map<string, object> = storage.get('canvasObjects');
+    const canvasObjects = storage.get('canvasObjects');
     if (!canvasObjects || canvasObjects.size === 0) {
       return true;
     }
@@ -64,7 +65,7 @@ const App = () => {
   }, []);
 
   const deleteShapeFromStorage = useMutation(({storage}, objectId) => {
-    const canvasObjects: Map<string, object> = storage.get('canvasObjects');
+    const canvasObjects = storage.get('canvasObjects');
     canvasObjects.delete(objectId);
   }, []);
 
@@ -76,7 +77,7 @@ const App = () => {
         setActiveElement(defaultNavElement);
         break;
       case 'delete':
-        handleDelete(fabricRef.current as any, deleteShapeFromStorage);
+        handleDelete(fabricRef.current, deleteShapeFromStorage);
         setActiveElement(defaultNavElement);
         break;
       case 'image':
@@ -95,18 +96,21 @@ const App = () => {
 
   const handleImageUploadEvent = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.stopPropagation();
-    handleImageUpload({
-      file: e.target.files?.[0] || null,
-      canvas: fabricRef as any,
-      shapeRef,
-      syncShapeInStorage,
-    });
+    const { files } = e.target;
+    if (files && files.length) {
+      handleImageUpload({
+        file: files[0],
+        canvas: fabricRef,
+        shapeRef,
+        syncShapeInStorage,
+      });
+    }
   };
 
   useEffect(() => {
-    const canvas: any = initializeFabric({ canvasRef, fabricRef });
+    const canvas = initializeFabric({ canvasRef, fabricRef });
 
-    canvas.on("mouse:down", (options: any) => {
+    canvas.on("mouse:down", (options) => {
       handleCanvasMouseDown({
         options,
         canvas,
@@ -115,7 +119,7 @@ const App = () => {
         selectedShapeRef,
       });
     });
-    canvas.on("mouse:move", (options: any) => {
+    canvas.on("mouse:move", (options) => {
       handleCanvasMouseMove({
         options,
         canvas,
@@ -125,7 +129,7 @@ const App = () => {
         syncShapeInStorage,
       });
     });
-    canvas.on("mouse:up", (options: any) => {
+    canvas.on("mouse:up", () => {
       handleCanvasMouseUp({
         canvas,
         isDrawing,
@@ -136,20 +140,20 @@ const App = () => {
         activeObjectRef,
       });
     });
-    canvas.on("object:modified", (options: any) => {
+    canvas.on("object:modified", (options) => {
       handleCanvasObjectModified({
         options,
         syncShapeInStorage,
       });
     });
-    canvas.on("selection:created", (options: any) => {
+    canvas.on("selection:created", (options) => {
       handleCanvasSelectionCreated({
         options,
         isEditingRef,
         setElementAttributes,
       });
     });
-    canvas.on("object:scaling", (options: any) => {
+    canvas.on("object:scaling", (options) => {
       handleCanvasObjectScaling({
         options,
         setElementAttributes,
@@ -212,8 +216,14 @@ const App = () => {
         handleImageUpload={handleImageUploadEvent}
       />
       <section className="flex h-full flex-row">
-        <LeftSidebar allShapes={Array.from(canvasObjects)} />
-        <Live canvasRef={canvasRef} />
+        <LeftSidebar
+          allShapes={Array.from(canvasObjects)}
+        />
+        <Live
+          canvasRef={canvasRef}
+          undo={undo}
+          redo={redo}
+        />
         <RightSidebar
           elementAttributes={elementAttributes}
           setElementAttributes={setElementAttributes}

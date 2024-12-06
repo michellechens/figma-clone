@@ -30,12 +30,11 @@ export const handlePaste = (
   if (clipboardData) {
     try {
       const parsedObjects = JSON.parse(clipboardData);
-      parsedObjects.forEach((objData: fabric.Object) => {
+      parsedObjects.forEach((objectData: fabric.Object) => {
         // convert the plain javascript objects retrieved from localStorage into fabricjs objects (deserialization)
-        fabric.util.enlivenObjects(
-          [objData],
-          (enlivenedObjects: fabric.Object[]) => {
-            enlivenedObjects.forEach((enlivenedObj) => {
+        fabric.util.enlivenObjects([objectData])
+          .then((enlivenedObjects: object[]) => {
+            enlivenedObjects.forEach((enlivenedObj: any) => {
               // Offset the pasted objects to avoid overlap with existing objects
               enlivenedObj.set({
                 left: enlivenedObj.left || 0 + 20,
@@ -48,9 +47,7 @@ export const handlePaste = (
               syncShapeInStorage(enlivenedObj);
             });
             canvas.renderAll();
-          },
-          "fabric"
-        );
+          });
       });
     } catch (error) {
       console.error("Error parsing clipboard data:", error);
@@ -59,9 +56,11 @@ export const handlePaste = (
 };
 
 export const handleDelete = (
-  canvas: fabric.Canvas,
+  canvas: fabric.Canvas | null,
   deleteShapeFromStorage: (id: string) => void
 ) => {
+  if (!canvas) return;
+
   const activeObjects = canvas.getActiveObjects();
   if (!activeObjects || activeObjects.length === 0) return;
 

@@ -1,3 +1,4 @@
+import * as fabric from "fabric";
 import { BaseUserMeta, User } from "@liveblocks/client";
 import { Gradient, Pattern } from "fabric/fabric-impl";
 
@@ -85,7 +86,7 @@ export type ElementDirection = {
 
 export type ImageUpload = {
   file: File | null;
-  canvas: React.MutableRefObject<fabric.Canvas>;
+  canvas: React.MutableRefObject<fabric.Canvas | null>;
   shapeRef: React.MutableRefObject<fabric.Object | null>;
   syncShapeInStorage: (shape: fabric.Object) => void;
 };

@@ -352,14 +352,13 @@ export const renderCanvas = ({
      * enlivenObjects() is used to render objects on canvas.
      * It takes two arguments:
      * 1. objectData: object data to render on canvas
-     * 2. callback: callback function to execute after rendering objects
-     * on canvas
+     * 2. callback: callback function to execute after rendering objects on canvas
      *
      * enlivenObjects: https://fabricjs.com/api/namespaces/util/functions/enlivenobjects/
      */
     fabric.util.enlivenObjects([objectData])
       .then((enlivenedObjects: object[]) => {
-        enlivenedObjects.forEach((enlivenedObj) => {
+        enlivenedObjects.forEach((enlivenedObj: any) => {
           // if element is active, keep it in active state so that it can be edited further
           if (activeObjectRef.current?.objectId === objectId) {
             fabricRef.current?.setActiveObject(enlivenedObj);
