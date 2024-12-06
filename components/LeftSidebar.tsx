@@ -11,7 +11,7 @@ const LeftSidebar = ({ allShapes }: { allShapes: Array<any> }) => {
     return (
       <section className="flex flex-col border-t border-primary-grey-200 bg-primary-black text-primary-grey-300
         min-w-[227px] sticky left-0 h-full max-sm:hidden select-none overflow-y-auto pb-20">
-        <h3 className="px-5 py-4 text-xs uppercase">Layers</h3>
+        <h3 className="px-5 py-4 text-xs uppercase border-b border-primary-grey-200">Layers</h3>
         <div className="flex flex-col">
           {allShapes?.map((shape: any) => {
             const [objectId, shapeData] = shape;
